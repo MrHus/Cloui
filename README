@@ -1,1 +1,13 @@
-This is a clojure UI framework.
+This is a clojure UI framework for making quick swing applications.
+
+The goal is to make creating UI's feel more clojure like.
+
+-- Very early version --
+
+(defn gui
+  []
+  (frame 
+    (panel
+      (button
+        (println "Clicked"))
+      (label "Hello World"))))  
