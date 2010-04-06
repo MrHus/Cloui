@@ -2,18 +2,36 @@
   (:import (javax.swing JFrame JPanel JButton JLabel JTextField)
            (java.awt.event ActionListener)))
 
-(defn frame 
-  [#^JPanel p]
-  "Create a frame with a panel"
-  (let [f (JFrame.)]
-    (doto f
-      (.add p)
-      (.setVisible true)
-      (.setSize 500 500)
-      (.setDefaultCloseOperation JFrame/HIDE_ON_CLOSE))
-   f))
+(def closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE})
 
-(defn panel
+(defn frame 
+  [args]
+  "Create a frame with optional args"
+  (let [f (JFrame.)]
+    
+    (if (contains? args :panel)
+      (.add f (args :panel)))
+        
+    (if (contains? args :size)
+      (.setSize f (get (args :size) 0) (get (args :size) 1)))    
+      
+    (if (contains? args :onclose)
+      (.setDefaultCloseOperation f (closeops (args :onclose)))
+      (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE))
+    
+    (if (true? (args :center))
+      (.setLocationRelativeTo f nil))
+     
+    (if (contains? args :title)
+      (.setTitle f (args :title)))  
+      
+    (if (contains? args :show)
+      (.setVisible f (args :show))
+      (.setVisible f true))
+      
+    f))
+
+(defn #^JPanel panel
   [& components]
   "Create a panel with any number of components"
   (let [p (JPanel.)]
@@ -47,15 +65,4 @@
   ([#^String s]
     (JTextField. s))    
   ([#^String s c]
-    (JTextField. s c)))
-  
-(defn gui
-  []
-  (frame 
-    (panel
-      (button
-        (println "Clicked"))
-      (label "Hello World")
-      (text-field)
-      (text-field "Hello you")
-      (text-field "Hello" 40))))  
+    (JTextField. s c))) 
