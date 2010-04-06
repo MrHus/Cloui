@@ -1,5 +1,5 @@
 (ns Cloui
-  (:import (javax.swing JFrame JPanel JButton JLabel)
+  (:import (javax.swing JFrame JPanel JButton JLabel JTextField)
            (java.awt.event ActionListener)))
 
 (defn frame 
@@ -15,12 +15,12 @@
 
 (defn panel
   [& components]
-  "Add a panel with any number of components"
+  "Create a panel with any number of components"
   (let [p (JPanel.)]
     (doseq [c components] (.add p c))
     p))
 
-(defmacro on-click-do 
+(defmacro add-listener-to 
   "Make something do f."
   [b f]
   `(.addActionListener ~b 
@@ -32,13 +32,22 @@
   "Create a button with a function"
   [f]               
   `(let [b# (JButton. "click")]
-     (on-click-do b# ~f)
+     (add-listener-to b# ~f)
      b#)) 
 
 (defn label
-  "Add a label"
+  "Create a label"
   [t]
   (JLabel. t))
+
+(defn text-field
+  "Add a text-field"
+  ([]
+    (JTextField.))  
+  ([#^String s]
+    (JTextField. s))    
+  ([#^String s c]
+    (JTextField. s c)))
   
 (defn gui
   []
@@ -46,4 +55,7 @@
     (panel
       (button
         (println "Clicked"))
-      (label "Hello World"))))  
+      (label "Hello World")
+      (text-field)
+      (text-field "Hello you")
+      (text-field "Hello" 40))))  
