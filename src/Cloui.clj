@@ -17,7 +17,7 @@
       
     (if (contains? args :onclose)
       (.setDefaultCloseOperation f (closeops (args :onclose)))
-      (.setDefaultCloseOperation JFrame/EXIT_ON_CLOSE))
+      (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE))
     
     (if (true? (args :center))
       (.setLocationRelativeTo f nil))

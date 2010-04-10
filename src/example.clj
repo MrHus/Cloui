@@ -1,5 +1,5 @@
 (ns example
-  (:use :reload Cloui))
+  (:use :reload-all Cloui))
 
 (defn greet
   "Greet the person from the text-field"
