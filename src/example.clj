@@ -8,7 +8,11 @@
 
 (def lbl (label "Enter your name and press the button"))
 (def txt (text-field "" 20))
-(def btn (button (greet lbl txt)))
+(def btn (button {}))
+(def act (action greet lbl txt))
+
+(.addActionListener btn act)
+
 (def pnl (panel lbl txt btn))
   
 (defn gui

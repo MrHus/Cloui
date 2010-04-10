@@ -38,20 +38,18 @@
     (doseq [c components] (.add p c))
     p))
 
-(defmacro add-listener-to 
-  "Make something do f."
-  [b f]
-  `(.addActionListener ~b 
-	  (proxy [ActionListener] []
-		  (actionPerformed [evt#]
-			  ~f))))
+(defmacro action
+  "Create ActionListener"
+  [f & args]
+  `(proxy [ActionListener] []
+     (actionPerformed [e#]
+       (~f ~@args)))) 
 
-(defmacro button
+(defn button
   "Create a button with a function"
-  [f]               
-  `(let [b# (JButton. "click")]
-     (add-listener-to b# ~f)
-     b#)) 
+  [args]               
+  (let [b (JButton. "click")] 
+    b)) 
 
 (defn label
   "Create a label"
