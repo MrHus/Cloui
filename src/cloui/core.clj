@@ -1,10 +1,10 @@
-(ns Cloui
-  (:import (javax.swing JFrame JPanel JButton JLabel JTextField)
-           (java.awt.event ActionListener)))
+(ns cloui.core
+  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField])
+  (:use :reload-all [cloui.listeners :only (action mouse)]))
 
 (def closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE})
 
-(defn frame 
+(defn frame
   [args]
   "Create a frame with optional args"
   (let [f (JFrame.)]
@@ -23,7 +23,7 @@
       (.setLocationRelativeTo f nil))
      
     (if (contains? args :title)
-      (.setTitle f (args :title)))  
+      (.setTitle f (args :title)))
       
     (if (contains? args :show)
       (.setVisible f (args :show))
@@ -38,18 +38,11 @@
     (doseq [c components] (.add p c))
     p))
 
-(defmacro action
-  "Create ActionListener"
-  [f & args]
-  `(proxy [ActionListener] []
-     (actionPerformed [e#]
-       (~f ~@args)))) 
-
 (defn button
   "Create a button with a function"
   [args]               
-  (let [b (JButton. "click")] 
-    b)) 
+  (let [b (JButton. "click")]
+    b))
 
 (defn label
   "Create a label"
@@ -59,8 +52,8 @@
 (defn text-field
   "Add a text-field"
   ([]
-    (JTextField.))  
+    (JTextField.))
   ([#^String s]
-    (JTextField. s))    
+    (JTextField. s))
   ([#^String s c]
-    (JTextField. s c))) 
+    (JTextField. s c)))   

@@ -1,5 +1,5 @@
 (ns example
-  (:use :reload-all Cloui))
+  (:use :reload-all cloui.core))
 
 (defn greet
   "Greet the person from the text-field"
@@ -9,9 +9,12 @@
 (def lbl (label "Enter your name and press the button"))
 (def txt (text-field "" 20))
 (def btn (button {}))
-(def act (action greet lbl txt))
+
+(def act (action {:performed (greet lbl txt)}))
+(def mse (mouse {:clicked #(println "Clicked")}))
 
 (.addActionListener btn act)
+(.addMouseListener label mse)
 
 (def pnl (panel lbl txt btn))
   
