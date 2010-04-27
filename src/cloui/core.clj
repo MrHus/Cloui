@@ -30,7 +30,7 @@
       
     f))
 
-(defn #^JPanel panel
+(defn panel
   [& components]
   "Create a panel with any number of components"
   (let [p (JPanel.)]
@@ -40,13 +40,18 @@
 (defn button
   "Create a button with a function"
   [args]               
-  (let [b (JButton. "click")]
+  (let [b (JButton.)]
+    (if (contains? args :text)
+      (.setText b (args :text)))
     b))
 
 (defn label
   "Create a label"
-  [t]
-  (JLabel. t))
+  [args]
+  (let [l (JLabel.)]
+    (if (contains? args :text)
+      (.setText l (args :text)))
+      l))
 
 (defn text-field
   "Add a text-field"
