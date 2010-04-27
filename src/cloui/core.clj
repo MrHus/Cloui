@@ -5,8 +5,16 @@
 (def closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE})
 
 (defn frame
+  "Create a frame with optional args.
+   ============= Optional args =============
+   :panel   The panel you want the frame to have.
+   :size    The size of the frame.
+   :onclose What the frame should do when closed possibles are [:exit, :hide, :nothing :dispose], default is :exit.
+   :center  Should the frame center on screen, true or false.
+   :listen  The listener you want the frame to register too.
+   :title   The title of the frame.
+   :show    Should the frame show, true or false, default is true, default is empty"
   [args]
-  "Create a frame with optional args"
   (let [f (JFrame.)]
     
     (if (contains? args :panel)
@@ -37,8 +45,11 @@
     f))
 
 (defn panel
+  "Create a panel with any number of components.
+  ============= Optional args =============
+   :components   The components the panel should add to itself.
+   :listen       The listener you want the panel to register too."
   [args]
-  "Create a panel with any number of components"
   (let [p (JPanel.)]
     (if (contains? args :components)
       (doseq [c (args :components)] (.add p c)))
@@ -49,7 +60,10 @@
     p))
 
 (defn button
-  "Create a button with a function"
+  "Create a button.
+   ============= Optional args =============
+   :text   The text ontop of the button.
+   :listen The listener you want the button to register too."
   [args]               
   (let [b (JButton.)]
     (if (contains? args :text)
@@ -61,7 +75,10 @@
     b))
 
 (defn label
-  "Create a label"
+  "Create a label.
+   ============= Optional args =============
+   :text   The default text of the label.
+   :listen The listener you want the label to register too."
   [args]
   (let [l (JLabel.)]
     (if (contains? args :text)
@@ -73,7 +90,11 @@
     l))
 
 (defn textfield
-  "Add a text-field"
+  "Add a text-field
+  ============= Optional args =============
+   :text    The default text of the textfield.
+   :columns The amount of columns of the textfield.
+   :listen  The listener you want the textfield to register too."
   [args]
   (let [t (JTextField.)]
     (if (contains? args :text)

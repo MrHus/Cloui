@@ -33,7 +33,7 @@
 
 (defn gui
   []
-  (frame {:panel pnl, :onclose :quit, :size [500 500], :center true, :title "Hello you"}))
+  (frame {:panel pnl, :onclose :hide, :size [500 500], :center true, :title "Hello you"}))
 
 (defn -main 
   "Launch the example gui"
