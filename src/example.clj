@@ -15,20 +15,17 @@
 (defn key-action
   "Add the strokes to the label"
   [event lbl]
-  (.setText lbl (str (.getKeyChar event))))
-
-(def lbl (label {:text "Enter your name and press the button"}))
-(def txt (textfield {:text "Type something in!" :columns 20}))
-(def btn (button {:text "Click me!"}))
-(def pnl (panel lbl txt btn))   
+  (.setText lbl (str (.getKeyChar event))))  
 
 (def act (action-listener {:performed {:f greet, :args [lbl txt]}}))
 (def mse (mouse-listener {:clicked {:f mouse-clicked, :args [lbl]}}))
-(def ky  (key-listener {:pressed {:f key-action, :args [lbl]}}))  
+(def ky  (key-listener {:pressed {:f key-action, :args [lbl]}}))
 
-(listen btn act)
-(listen txt ky)
-(listen pnl mse)
+(def lbl (label {:text "Enter your name and press the button"}))
+(def txt (textfield {:text "Type something in!", :columns 20, :listen ky}))
+(def btn (button {:text "Click me!", :listen act}))
+
+(def pnl (panel {:components [lbl txt btn], :listen mse}))
 
 (defn gui
   []
