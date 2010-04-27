@@ -16,7 +16,9 @@
       (.setSize f (get (args :size) 0) (get (args :size) 1)))    
       
     (if (contains? args :onclose)
-      (.setDefaultCloseOperation f (closeops (args :onclose)))
+      (if (contains? closeops (args :onclose))
+        (.setDefaultCloseOperation f (closeops (args :onclose)))
+        (throw (Error. (str "Cloui could not find close operation \"" (args :onclose) "\" see docs for possibles"))))
       (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE))
     
     (if (true? (args :center))
@@ -83,5 +85,4 @@
     (if (contains? args :listen)
       (listen t (args :listen)))
         
-    t))
-         
+    t))      
