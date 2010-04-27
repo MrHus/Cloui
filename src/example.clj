@@ -31,7 +31,6 @@
 (listen btn act)
 (listen txt ky)
 (listen pnl mse)
-(listen pnl "test")
 
 (defn gui
   []
