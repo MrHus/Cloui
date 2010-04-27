@@ -56,3 +56,12 @@
        (keyPressed  [event#] (~f-p event# ~@a-p))
        (keyTyped    [event#] (~f-t event# ~@a-t))
        (keyReleased [event#] (~f-r event# ~@a-r)))))
+       
+(defn listen
+  "Make the c listen to the l"
+  [c l]
+  (cond
+    (instance? ActionListener l) (.addActionListener c l)
+    (instance? MouseListener l)  (.addMouseListener  c l)
+    (instance? KeyListener l)    (.addKeyListener    c l)
+    :else (throw (Error. "Listener not recognized")))) 

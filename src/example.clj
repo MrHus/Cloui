@@ -28,9 +28,10 @@
 (def mse (mouse-listener {:clicked {:f mouse-clicked, :args [lbl]}}))
 (def ky  (key-listener {:pressed {:f key-action, :args [lbl]}}))  
 
-(.addActionListener btn act)
-(.addKeyListener txt ky)
-(.addMouseListener pnl mse)
+(listen btn act)
+(listen txt ky)
+(listen pnl mse)
+(listen pnl "test")
 
 (defn gui
   []
