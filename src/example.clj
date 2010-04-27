@@ -17,6 +17,8 @@
   [event lbl]
   (.setText lbl (str (.getKeyChar event))))  
 
+(declare lbl txt btn)
+
 (def act (action-listener {:performed {:f greet, :args [lbl txt]}}))
 (def mse (mouse-listener {:clicked {:f mouse-clicked, :args [lbl]}}))
 (def ky  (key-listener {:pressed {:f key-action, :args [lbl]}}))
@@ -25,7 +27,8 @@
 (def txt (textfield {:text "Type something in!", :columns 20, :listen ky}))
 (def btn (button {:text "Click me!", :listen act}))
 
-(def pnl (panel {:components [lbl txt btn], :listen mse}))
+(def pnl (panel {:components [lbl txt btn]}))
+(listen pnl mse)
 
 (defn gui
   []
