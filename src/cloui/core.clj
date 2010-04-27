@@ -53,11 +53,14 @@
       (.setText l (args :text)))
       l))
 
-(defn text-field
+(defn textfield
   "Add a text-field"
-  ([]
-    (JTextField.))
-  ([#^String s]
-    (JTextField. s))
-  ([#^String s c]
-    (JTextField. s c)))   
+  [args]
+  (let [t (JTextField.)]
+    (if (contains? args :text)
+      (.setText t (args :text)))
+    
+    (if (contains? args :columns)
+      (.setColumns t (args :columns)))
+    t))
+         

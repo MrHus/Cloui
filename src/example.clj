@@ -18,7 +18,7 @@
   (.setText lbl (str (.getKeyChar event))))
 
 (def lbl (label {:text "Enter your name and press the button"}))
-(def txt (text-field "" 20))
+(def txt (textfield {:text "Type something in!" :columns 20}))
 (def btn (button {:text "Click me!"}))
 (def pnl (panel lbl txt btn))   
 
