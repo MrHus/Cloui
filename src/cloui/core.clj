@@ -1,6 +1,5 @@
 (ns cloui.core
-  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField])
-  (:use :reload-all [cloui.listeners]))
+  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField]))
 
 (def closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE})
 
