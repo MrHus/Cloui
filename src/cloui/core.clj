@@ -2,8 +2,6 @@
   (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem])
   (:use [cloui.listeners :only (listen)]))
 
-(def closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE})
-
 (defn frame
   "Create a frame with optional args.
    ============= Optional args =============
@@ -16,7 +14,8 @@
    :title   The title of the frame.
    :show    Should the frame show, true or false, default is true, default is empty"
   [args]
-  (let [f (JFrame.)]
+  (let [f (JFrame.)
+        closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE}]
     
     (if (contains? args :panel)
       (.add f (args :panel)))
