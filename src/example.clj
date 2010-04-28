@@ -18,6 +18,11 @@
   [event lbl]
   (.setText lbl (str (.getKeyChar event))))  
 
+(defn menu-action
+  "Change the label to the name of the item"
+  [event lbl]
+  (.setText lbl (.. event getSource getText)))
+
 (declare lbl txt btn)
 
 (def act (action-listener {:performed {:f greet, :args [lbl txt]}}))
@@ -31,9 +36,13 @@
 (def pnl (panel {:components [lbl txt btn]}))
 (listen pnl mse)
 
+(def menuact (action-listener {:performed {:f menu-action, :args [lbl]}}))               
+(def mnu (menu [{:text "File" :items [{:text "New" :listen menuact}, {:text "Load" :listen menuact}, {:text "Save" :listen menuact}]}
+                {:text "Edit" :items [{:text "Undo" :listen menuact}]}]))                 
+
 (defn gui
   []
-  (frame {:panel pnl, :onclose :hide, :size [500 500], :center true, :title "Hello you"}))
+  (frame {:panel pnl, :menu mnu :onclose :hide, :size [500 500], :center true, :title "Hello you"}))
 
 (defn -main 
   "Launch the example gui"

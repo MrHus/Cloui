@@ -1,5 +1,5 @@
 (ns cloui.core
-  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField])
+  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem])
   (:use [cloui.listeners :only (listen)]))
 
 (def closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE})
@@ -8,6 +8,7 @@
   "Create a frame with optional args.
    ============= Optional args =============
    :panel   The panel you want the frame to have.
+   :menu    The menu you want the application to have.
    :size    The size of the frame.
    :onclose What the frame should do when closed possibles are [:exit, :hide, :nothing :dispose], default is :exit.
    :center  Should the frame center on screen, true or false.
@@ -19,6 +20,9 @@
     
     (if (contains? args :panel)
       (.add f (args :panel)))
+    
+    (if (contains? args :panel)
+      (.setJMenuBar f (args :menu)))
         
     (if (contains? args :size)
       (.setSize f (get (args :size) 0) (get (args :size) 1)))    
@@ -58,6 +62,36 @@
       (listen p (args :listen)))
       
     p))
+
+(defn menu
+  "Create a menubar with Menu's and MenuItems.
+  coll is a vector of maps that represent JMenu's.
+  ============= JMenu args ============= 
+  :text  The text of the JMenu
+  :items The JMenuItems of the JMenu, is a vector of maps too.
+  
+  ============= JMenuItem args =============
+  :text    The text of the JMenuItem
+  :listen  The listener you want the JMenuItem to register too.
+  
+  Example of coll: 
+  [{:text \"File\" :items [
+     {:text \"New\"}, 
+     {:text \"Load\"}, 
+     {:text \"Save\" }]}
+   {:text \"Edit\" :items [
+     {:text \"Undo\" :listen menuact}]}]"
+  [coll]
+  (let [bar (JMenuBar.)]
+    (doseq [jmenu coll]
+      (let [menu (JMenu. (jmenu :text))]
+        (doseq [item (jmenu :items)]
+          (let [mi (JMenuItem. (item :text))]
+            (if (contains? item :listen)
+             (listen mi (item :listen)))
+             (.add menu mi)))
+        (.add bar menu)))     
+     bar))
 
 (defn button
   "Create a button.
