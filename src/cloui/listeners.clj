@@ -1,5 +1,6 @@
 (ns cloui.listeners
-  (:import [java.awt.event ActionListener MouseListener KeyListener KeyEvent]))
+  (:import [java.awt.event ActionListener MouseListener KeyListener])
+  (:import [javax.swing.event ChangeListener]))
 
 (defn extract-f 
   [k args]
@@ -57,6 +58,14 @@
        (keyTyped    [event#] (~f-t event# ~@a-t))
        (keyReleased [event#] (~f-r event# ~@a-r)))))
        
+(defmacro change-listener 
+  "Create a StateChangedListener"
+  [args]
+  (let [f-c (extract-f    :changed  args)
+        a-c (extract-args :changed  args)]
+    `(proxy [ChangeListener] []
+       (stateChanged  [event#] (~f-c event# ~@a-c)))))       
+       
 (defn listen
   "Make the c listen to the l"
   [c l]
@@ -64,4 +73,5 @@
     (instance? ActionListener l) (.addActionListener c l)
     (instance? MouseListener l)  (.addMouseListener  c l)
     (instance? KeyListener l)    (.addKeyListener    c l)
+    (instance? ChangeListener l) (.addChangeListener c l)
     :else (throw (Error. "Listener not recognized")))) 

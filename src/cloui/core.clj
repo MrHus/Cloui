@@ -1,5 +1,5 @@
 (ns cloui.core
-  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem])
+  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem JSlider])
   (:use [cloui.listeners :only (listen)]))
 
 (defn frame
@@ -29,7 +29,7 @@
     (if (contains? args :onclose)
       (if (contains? closeops (args :onclose))
         (.setDefaultCloseOperation f (closeops (args :onclose)))
-        (throw (Error. (str "Cloui could not find close operation \"" (args :onclose) "\" see docs for possibles"))))
+        (throw (Error. (str "Cloui could not find close operation \"" (args :onclose) "\" see doc for possibles"))))
       (.setDefaultCloseOperation f JFrame/EXIT_ON_CLOSE))
     
     (if (true? (args :center))
@@ -123,7 +123,7 @@
     l))
 
 (defn textfield
-  "Add a text-field
+  "Create a text-field
   ============= Optional args =============
    :text    The default text of the textfield.
    :columns The amount of columns of the textfield.
@@ -139,4 +139,50 @@
     (if (contains? args :listen)
       (listen t (args :listen)))
         
-    t))      
+    t))
+    
+(defn slider
+  "Create a slider
+  ============= Optional args =============
+  :min          The minimum value of the slider.
+  :max          The maximum value of the slider.
+  :value        The starting value of the slider.
+  :orientation  The orientation of the slider, options are [:vertical :v :horizontal :h], defaults to horizontal.
+  :major-tick   The spaceing between major ticks.
+  :minor-tick   The spaceing between minor ticks.
+  :labels       Should the major ticks be label, true or false.
+  "
+  [args]
+  (let [s (JSlider.)
+        orientations {:v JSlider/VERTICAL, :vertical JSlider/VERTICAL, :h JSlider/HORIZONTAL, :horizontal JSlider/HORIZONTAL}]
+    
+    (if (contains? args :orientation)
+      (if (contains? orientations (args :orientation))
+        (.setOrientation s (orientations (args :orientation)))
+        (throw (Error. (str "Cloui could not find orientation \"" (args :orientation) "\" see doc for possibles"))))
+      (.setOrientation s JSlider/HORIZONTAL))
+      
+    (if (contains? args :min)
+      (.setMinimum s (args :min)))
+      
+    (if (contains? args :max)
+      (.setMaximum s (args :max)))
+      
+    (if (contains? args :value)
+      (.setValue s (args :value)))
+    
+    (if (contains? args :major-tick)
+      (do
+        (.setMajorTickSpacing s (args :major-tick))
+        (.setPaintTicks s true)))
+      
+    (if (contains? args :minor-tick)
+      (do
+        (.setMinorTickSpacing s (args :minor-tick))
+        (.setPaintTicks s true)))  
+    
+    (if (true? (args :labels))
+      (.setPaintLabels s true))
+      
+    s))  
+   

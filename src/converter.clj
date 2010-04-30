@@ -41,6 +41,6 @@
   (frame {:panel pnl, :onclose :exit, :size [300 500], :center true, :title "Cloverter"}))    
   
 (defn -main 
-  "Launch the example gui"
+  "Launch the converter gui"
   [& args]
   (gui))    
