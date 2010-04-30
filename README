@@ -1,7 +1,17 @@
-This is a clojure UI framework for making quick swing applications.
+This is a clojure Swing wrapper.
 
 The goal is to make creating UI's feel more clojure like.
 
 See src/example.clj
 
--- Very early version --
+Roadmap
+
+- Manage Layouts
+- JRadioButton
+- JCheckBox
+- JComboBox
+- JDialog
+- JPasswordField
+- JProgressBar
+- JTextArea
+- JTip
