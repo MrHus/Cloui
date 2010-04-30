@@ -69,9 +69,15 @@
 (defn listen
   "Make the c listen to the l"
   [c l]
-  (cond
-    (instance? ActionListener l) (.addActionListener c l)
-    (instance? MouseListener l)  (.addMouseListener  c l)
-    (instance? KeyListener l)    (.addKeyListener    c l)
-    (instance? ChangeListener l) (.addChangeListener c l)
-    :else (throw (Error. "Listener not recognized")))) 
+  (letfn [(add-lst 
+            [com]
+              (cond 
+                (instance? ActionListener l) (.addActionListener com l)
+                (instance? MouseListener l)  (.addMouseListener  com l)
+                (instance? KeyListener l)    (.addKeyListener    com l)
+                (instance? ChangeListener l) (.addChangeListener com l)
+                :else (throw (Error. "Listener not recognized"))))]
+                
+     (if (vector? c)
+       (doseq [com c] (add-lst com))
+       (add-lst c))))               

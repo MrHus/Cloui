@@ -13,8 +13,7 @@
 
 (def lst (change-listener {:changed {:f update-lbl, :args [lbl]}}))
 
-(listen sldv lst)
-(listen sldh lst)
+(listen [sldv, sldh] lst)
 
 (def pnl (panel {:components [sldv sldh lbl]}))
 

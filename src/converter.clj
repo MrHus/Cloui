@@ -31,8 +31,7 @@
 
 (def lst (key-listener {:released {:f convert :args [txtf txtc]}}))  
 
-(listen txtf lst)
-(listen txtc lst)
+(listen [txtf txtc] lst)
 
 (def pnl (panel {:components [lblf txtf lblc txtc]}))
   
