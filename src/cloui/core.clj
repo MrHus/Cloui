@@ -147,7 +147,7 @@
   :major-tick   The spaceing between major ticks.
   :minor-tick   The spaceing between minor ticks.
   :labels       Should the major ticks be label, true or false.
-  "
+  :listen       The listener you want the slider to register too."
   [args]
   (let [s (JSlider.)
         orientations {:v JSlider/VERTICAL, :vertical JSlider/VERTICAL, :h JSlider/HORIZONTAL, :horizontal JSlider/HORIZONTAL}]

@@ -61,10 +61,10 @@
 (defmacro change-listener 
   "Create a StateChangedListener"
   [args]
-  (let [f-c (extract-f    :changed  args)
-        a-c (extract-args :changed  args)]
+  (let [f (extract-f    :changed  args)
+        a (extract-args :changed  args)]
     `(proxy [ChangeListener] []
-       (stateChanged  [event#] (~f-c event# ~@a-c)))))       
+       (stateChanged  [event#] (~f event# ~@a)))))       
        
 (defn listen
   "Make the c listen to the l"
