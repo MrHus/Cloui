@@ -2,6 +2,18 @@
   (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem JSlider])
   (:use [cloui.listeners :only (listen)]))
 
+(defmacro has-doto
+  "If args has key then do f"
+  [args k f to]
+  `(if (contains? ~args ~k)
+    (. ~to ~f (~args ~k)))) 
+
+(defmacro has-listen
+  "If args has :listen then listen to it"
+  [args f]
+  `(if (contains? ~args :listen)
+    (listen ~f (~args :listen))))
+
 (defn frame
   "Create a frame with optional args.
    ============= Optional args =============
@@ -17,11 +29,9 @@
   (let [f (JFrame.)
         closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE}]
     
-    (if (contains? args :panel)
-      (.add f (args :panel)))
-    
-    (if (contains? args :panel)
-      (.setJMenuBar f (args :menu)))
+    (has-doto args :panel add f) 
+    (has-doto args :menu setJMenuBar f)
+    (has-doto args :title setTitle f)
         
     (if (contains? args :size)
       (.setSize f (get (args :size) 0) (get (args :size) 1)))    
@@ -35,11 +45,7 @@
     (if (true? (args :center))
       (.setLocationRelativeTo f nil))
     
-    (if (contains? args :listen)
-      (listen f (args :listen)))
-    
-    (if (contains? args :title)
-      (.setTitle f (args :title)))
+    (has-listen args f)  
       
     (if (contains? args :show)
       (.setVisible f (args :show))
@@ -57,8 +63,7 @@
     (if (contains? args :components)
       (doseq [c (args :components)] (.add p c)))
       
-    (if (contains? args :listen)
-      (listen p (args :listen)))
+    (has-listen args p)
       
     p))
 
@@ -86,8 +91,7 @@
       (let [menu (JMenu. (jmenu :text))]
         (doseq [item (jmenu :items)]
           (let [mi (JMenuItem. (item :text))]
-            (if (contains? item :listen)
-             (listen mi (item :listen)))
+             (has-listen item mi)
              (.add menu mi)))
         (.add bar menu)))     
      bar))
@@ -99,11 +103,9 @@
    :listen The listener you want the button to register too."
   [args]               
   (let [b (JButton.)]
-    (if (contains? args :text)
-      (.setText b (args :text)))
     
-    (if (contains? args :listen)
-      (listen b (args :listen)))  
+    (has-doto args :text setText b)    
+    (has-listen args b) 
       
     b))
 
@@ -114,11 +116,9 @@
    :listen The listener you want the label to register too."
   [args]
   (let [l (JLabel.)]
-    (if (contains? args :text)
-      (.setText l (args :text)))
-      
-    (if (contains? args :listen)
-      (listen l (args :listen)))  
+    
+    (has-doto args :text setText l)
+    (has-listen args l)  
       
     l))
 
@@ -130,14 +130,10 @@
    :listen  The listener you want the textfield to register too."
   [args]
   (let [t (JTextField.)]
-    (if (contains? args :text)
-      (.setText t (args :text)))
     
-    (if (contains? args :columns)
-      (.setColumns t (args :columns)))
-      
-    (if (contains? args :listen)
-      (listen t (args :listen)))
+    (has-doto args :text setText t)
+    (has-doto args :columns setColumns t)
+    (has-listen args t)
         
     t))
     
@@ -161,16 +157,11 @@
         (.setOrientation s (orientations (args :orientation)))
         (throw (Error. (str "Cloui could not find orientation \"" (args :orientation) "\" see doc for possibles"))))
       (.setOrientation s JSlider/HORIZONTAL))
-      
-    (if (contains? args :min)
-      (.setMinimum s (args :min)))
-      
-    (if (contains? args :max)
-      (.setMaximum s (args :max)))
-      
-    (if (contains? args :value)
-      (.setValue s (args :value)))
-    
+     
+    (has-doto args :min setMinimum s)
+    (has-doto args :max setMaximum s)
+    (has-doto args :value setValue s)
+
     (if (contains? args :major-tick)
       (do
         (.setMajorTickSpacing s (args :major-tick))
@@ -183,6 +174,8 @@
     
     (if (true? (args :labels))
       (.setPaintLabels s true))
+      
+    (has-listen args s)  
       
     s))  
    
