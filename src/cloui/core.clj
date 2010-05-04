@@ -1,5 +1,5 @@
 (ns cloui.core
-  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem JSlider])
+  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem JSlider JCheckBox])
   (:use [cloui.listeners :only (listen)]))
 
 (defmacro has-doto
@@ -178,4 +178,18 @@
     (has-listen args s)  
       
     s))  
-   
+
+(defn checkbox
+  "Create a checkbox
+  ============= Optional args =============
+   :text     The default text of the checkbox.
+   :selected Is the checkbox currently checked, true or false.
+   :listen   The listener you want the checkbox to register too."
+  [args]
+  (let [box (JCheckBox.)]
+    (has-doto args :text setText box)
+    (has-doto args :selected setSelected box)
+    (has-listen args box)
+    
+    box))
+       

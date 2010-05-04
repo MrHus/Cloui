@@ -80,4 +80,4 @@
                 
      (if (vector? c)
        (doseq [com c] (add-lst com))
-       (add-lst c))))               
+       (add-lst c))))                      

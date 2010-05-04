@@ -31,9 +31,10 @@
 
 (def lbl (label {:text "Enter your name and press the button"}))
 (def txt (textfield {:text "Type something in!", :columns 20, :listen ky}))
-(def btn (button {:text "Click me!", :listen act}))
+(def btn (button {:text "Click me!", :listen act}))                                                                          
+(def box (checkbox {:text "Check me", :selected true}))
 
-(def pnl (panel {:components [lbl txt btn]}))
+(def pnl (panel {:components [lbl txt btn box]}))
 (listen pnl mse)
 
 (def menuact (action-listener {:performed {:f menu-action, :args [lbl]}}))               
