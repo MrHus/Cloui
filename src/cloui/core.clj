@@ -25,8 +25,9 @@
    :listen  The listener you want the frame to register too.
    :title   The title of the frame.
    :show    Should the frame show, true or false, default is true, default is empty"
-  [args]
-  (let [f (JFrame.)
+  [& opt]
+  (let [args (apply hash-map opt)
+        f (JFrame.)
         closeops {:exit JFrame/EXIT_ON_CLOSE, :hide JFrame/HIDE_ON_CLOSE, :nothing JFrame/DO_NOTHING_ON_CLOSE, :dispose JFrame/DISPOSE_ON_CLOSE}]
     
     (has-doto args :panel add f) 
@@ -58,8 +59,9 @@
   ============= Optional args =============
    :components   The components the panel should add to itself.
    :listen       The listener you want the panel to register too."
-  [args]
-  (let [p (JPanel.)]
+  [& opt]
+  (let [args (apply hash-map opt)
+        p (JPanel.)]
     (if (contains? args :components)
       (doseq [c (args :components)] (.add p c)))
       
@@ -101,8 +103,9 @@
    ============= Optional args =============
    :text   The text ontop of the button.
    :listen The listener you want the button to register too."
-  [args]               
-  (let [b (JButton.)]
+  [& opt]               
+  (let [args (apply hash-map opt)
+        b (JButton.)]
     
     (has-doto args :text setText b)    
     (has-listen args b) 
@@ -114,8 +117,9 @@
    ============= Optional args =============
    :text   The default text of the label.
    :listen The listener you want the label to register too."
-  [args]
-  (let [l (JLabel.)]
+  [& opt]
+  (let [args (apply hash-map opt)
+        l (JLabel.)]
     
     (has-doto args :text setText l)
     (has-listen args l)  
@@ -128,8 +132,9 @@
    :text    The default text of the textfield.
    :columns The amount of columns of the textfield.
    :listen  The listener you want the textfield to register too."
-  [args]
-  (let [t (JTextField.)]
+  [& opt]
+  (let [args (apply hash-map opt)
+        t (JTextField.)]
     
     (has-doto args :text setText t)
     (has-doto args :columns setColumns t)
@@ -148,8 +153,9 @@
   :minor-tick   The spaceing between minor ticks.
   :labels       Should the major ticks be label, true or false.
   :listen       The listener you want the slider to register too."
-  [args]
-  (let [s (JSlider.)
+  [& opt]
+  (let [args (apply hash-map opt)
+        s (JSlider.)
         orientations {:v JSlider/VERTICAL, :vertical JSlider/VERTICAL, :h JSlider/HORIZONTAL, :horizontal JSlider/HORIZONTAL}]
     
     (if (contains? args :orientation)
@@ -185,8 +191,9 @@
    :text     The default text of the checkbox.
    :selected Is the checkbox currently checked, true or false.
    :listen   The listener you want the checkbox to register too."
-  [args]
-  (let [box (JCheckBox.)]
+  [& opt]
+  (let [args (apply hash-map opt)
+        box (JCheckBox.)]
     (has-doto args :text setText box)
     (has-doto args :selected setSelected box)
     (has-listen args box)

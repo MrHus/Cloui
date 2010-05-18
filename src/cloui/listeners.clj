@@ -14,20 +14,22 @@
   "Get the :args from the args, if there are none return empty list"
   (if (contains? args k) 
     (:args (args k))
-    '()))
+    ()))
     
 (defmacro action-listener
   "Create an ActionListener"
-  [args]
-  (let [f (extract-f :performed args)
+  [& opt]
+  (let [args (apply hash-map opt) 
+        f (extract-f :performed args)
         a (extract-args :performed args)]   
     `(proxy [ActionListener] []
        (actionPerformed [event#] (~f event# ~@a))))) 
 
 (defmacro mouse-listener
   "Create a MouseListener"
-  [args]
-  (let [f-c (extract-f    :clicked  args)
+  [& opt]
+  (let [args (apply hash-map opt) 
+        f-c (extract-f    :clicked  args)
         a-c (extract-args :clicked  args)        
         f-e (extract-f    :entered  args)
         a-e (extract-args :entered  args)
@@ -46,8 +48,9 @@
        
 (defmacro key-listener 
   "Create a KeyListener"
-  [args]
-  (let [f-p (extract-f    :pressed  args)
+  [& opt]
+  (let [args (apply hash-map opt) 
+        f-p (extract-f    :pressed  args)
         a-p (extract-args :pressed  args)
         f-t (extract-f    :typed    args)
         a-t (extract-args :typed    args)
@@ -60,8 +63,9 @@
        
 (defmacro change-listener 
   "Create a StateChangedListener"
-  [args]
-  (let [f (extract-f    :changed  args)
+  [& opt]
+  (let [args (apply hash-map opt) 
+        f (extract-f    :changed  args)
         a (extract-args :changed  args)]
     `(proxy [ChangeListener] []
        (stateChanged  [event#] (~f event# ~@a)))))       
