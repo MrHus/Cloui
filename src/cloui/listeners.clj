@@ -4,18 +4,18 @@
 
 (defn extract-f 
   [k args]
-  "Get the :f from the args map, else return the println function"
+  "Get the :f from the args map, else return the nil? function."
   (if (contains? args k) 
-    (:f (args k))
+    (first (k args))
     nil?))
     
 (defn extract-args 
   [k args]
   "Get the :args from the args, if there are none return empty list"
   (if (contains? args k) 
-    (:args (args k))
-    ()))
-    
+    (rest (rest (k args)))
+    nil))
+
 (defmacro action-listener
   "Create an ActionListener"
   [& opt]
