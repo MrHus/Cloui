@@ -42,4 +42,6 @@
 (defn -main 
   "Launch the converter gui"
   [& args]
-  (gui))     
+  (gui))
+  
+(gui)       

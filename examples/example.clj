@@ -43,9 +43,11 @@
 
 (defn gui
   []
-  (frame :panel pnl, :menu mnu :onclose :hide, :size [500 500], :center true, :title "Hello you"))
+  (frame :panel pnl, :menu mnu :onclose :exit, :size [500 500], :center true, :title "Hello you"))
 
 (defn -main 
   "Launch the example gui"
   [& args]
   (gui))
+  
+(gui)  

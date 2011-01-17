@@ -22,4 +22,6 @@
 (defn -main 
   "Launch the actionexample gui"
   [& args]
-  (gui))    
+  (gui))
+  
+(gui)      

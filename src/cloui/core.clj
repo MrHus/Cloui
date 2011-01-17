@@ -1,6 +1,8 @@
 (ns cloui.core
-  (:import  [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem JSlider JCheckBox])
-  (:use [cloui.listeners :only (listen)]))
+  (:import [javax.swing JFrame JPanel JButton JLabel JTextField JMenuBar JMenu JMenuItem JSlider JCheckBox])
+  (:import [java.awt BorderLayout])
+  (:use    [cloui.listeners :only (listen)])
+  (:use    cloui.layouts))
 
 (defmacro has-doto
   "If args has key then do f"
@@ -46,11 +48,11 @@
     (if (true? (args :center))
       (.setLocationRelativeTo f nil))
     
-    (has-listen args f)  
-      
     (if (contains? args :show)
       (.setVisible f (args :show))
       (.setVisible f true))
+    
+    (has-listen args f)  
       
     f))
 
@@ -58,16 +60,27 @@
   "Create a panel with any number of components.
   ============= Optional args =============
    :components   The components the panel should add to itself.
-   :listen       The listener you want the panel to register too."
+   :listen       The listener you want the panel to register too.
+   :layout       The layout you want the panel to have, possibilities are [:border]"
   [& opt]
   (let [args (apply hash-map opt)
         p (JPanel.)]
+    
+    (if (contains? args :layout)
+      (condp = (:layout args)
+        :border (.setLayout p (BorderLayout.))
+        :default nil))
+        
     (if (contains? args :components)
-      (doseq [c (args :components)] (.add p c)))
-      
+      (if (contains? args :layout)
+        (condp = (:layout args)
+          :border   (border-layout p (args :components))
+          :default (throw (Error. (str "Cloui could not find your layout, possibilities are [:border]"))))
+      (doseq [c (args :components)] (.add p c))))
+          
     (has-listen args p)
       
-    p))
+    p))    
 
 (defn menu
   "Create a menubar with Menu's and MenuItems.
@@ -194,6 +207,7 @@
   [& opt]
   (let [args (apply hash-map opt)
         box (JCheckBox.)]
+        
     (has-doto args :text setText box)
     (has-doto args :selected setSelected box)
     (has-listen args box)
